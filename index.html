@@ -2,18 +2,87 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Hello, World! • A-Frame</title>
-    <meta name="description" content="Hello, World! • A-Frame">
-    <script src="https://aframe.io/releases/0.1.2/aframe.min.js"></script>
+    <title>simple boilerplate</title>
+    <meta name="description" content="Spheres">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/node_modules/aframe/dist/aframe.js"></script>
+    <script src="/js/aframe-extras.js"></script>
+    <script src="/js/bundle.js"></script>
+    <script src="/js/entity-generator.js"></script>
+    <script src="/js/app.js"></script>
   </head>
   <body>
-    <a-scene>
-      <a-sphere position="0 1.25 -1" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-cube position="-1 0.5 1" rotation="0 45 0" width="1" height="1" depth="1" color="#4CC3D9"></a-cube>
-      <a-cylinder position="1 0.75 1" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-      <a-plane rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
 
-      <a-sky color="#ECECEC"></a-sky>
+    <a-scene>
+      <!-- Player -->
+      <a-entity camera
+                kinematic-body
+                universal-controls
+                position="0 1.764 0">
+        <!-- <a-cursor material="color: black" maxDistance="100" fuse="true" timeout="2000">
+        </a-cursor> -->
+          <a-entity cursor="fuse: true; maxDistance: 30; timeout: 500"
+            position="0 0 -5"
+            geometry="primitive: ring"
+            material="color: black; shader: flat">
+
+          </a-entity>
+
+        <!-- the image that I want to hide or show based on wether its atom has been selected-->
+        <a-image id="elementInfo" src="/assets/hydrogen.png" height=".75" width="1.5" position="1 0 -1" opacity="0.8"> 
+        </a-image>
+        </a-entity>
+      </a-entity>
+      </a-entity>
+
+      <a-grid static-body></a-grid>
+
+      <a-assets>
+        <a-mixin id="hydrogen" 
+                  static-body 
+                  geometry="primitive: sphere; radius: 1" 
+                  material="color: red; metalness: 0.3">
+          <a-event name="mouseenter" color="black"></a-event>
+          <a-event name="mouseleave" color="yellow"></a-event>
+
+        </a-mixin>
+        <a-mixin id="oxygen" 
+                  static-body
+                  geometry="primitive: sphere; radius: 5.3" 
+                  material="color: white; metalness: 0.3">
+        </a-mixin>
+        <a-mixin id="carbon" 
+                  
+                  geometry="primitive: sphere; radius: 4" 
+                  material="color: blue; metalness: 0.3">
+          
+        </a-mixin>
+
+        <!-- I was considering linking the hide/show action to this mixin so I could add it to the different atoms and have some logic that would choose the image source based on the id of the sphere targeted-->
+        <a-mixin id="mouseOverCheck">
+          <a-event name="mouseenter" color="black"></a-event>
+          <a-event name="mouseleave" color="yellow"></a-event>
+        </a-mixin>
+        
+      </a-assets>
+
+      <a-sky color="#99ffff"><a-sky>
+
+      <a-entity mixin="hydrogen mouseOverCheck" entity-generator="mixin: hydrogen; num: 10; spread: 50">
+        <a-event name="mouseenter" color="black"></a-event>
+        <a-event name="mouseleave" color="yellow"></a-event>
+      </a-entity>
+      <a-entity mixin="oxygen mouseOverCheck" entity-generator="mixin: oxygen; num: 10; spread: 50"></a-entity>
+      <a-entity mixin="carbon mouseOverCheck" entity-generator="mixin: carbon; num: 10; spread: 50">
+        <a-event name="mouseenter" color="black"></a-event>
+        <a-event name="mouseleave" color="yellow"></a-event>
+      </a-entity>
+
+      <a-entity id="cube" geometry="primitive: box" material="color: blue"></a-entity>
+
     </a-scene>
+
   </body>
 </html>
+
